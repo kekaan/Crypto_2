@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\iskan\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\iskan\\.nuget\\packages"
+    ]
+  }
+}
