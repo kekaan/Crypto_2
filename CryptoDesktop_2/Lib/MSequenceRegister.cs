@@ -15,11 +15,9 @@ namespace Crypto_2.Lib
         private const int Coefficient1 = 93;
         private const int Coefficient2 = 102;
 
-        private const int Coefficient1Test = 3;
-        private const int Coefficient2Test = 0;
-
         private BitArray state;
 
+        // регистр со случайно начальной последовательностью
         public MSequenceRegister(int length)
         {
             state = new BitArray(length);
@@ -31,16 +29,19 @@ namespace Crypto_2.Lib
             File.WriteAllText(KeyFilePath, Converter.ToString(state));
         }
 
+        // регистр с заданной начальной последовательностью
         public MSequenceRegister(int length, string startState)
         {
             state = Converter.ToBitArray(startState);
         }
 
+        // со всеми 1/0
         public MSequenceRegister(int lenght, bool startValue)
         {
             state = new BitArray(lenght, startValue);
         }
 
+        // получение последовательности нужной длины
         public string GetMSequence(int length)
         {
             string result = "";
@@ -54,9 +55,9 @@ namespace Crypto_2.Lib
             return result;
         }
 
+        // итерация
         private void SetNextState()
         {
-            //bool newOne = state[Coefficient1Test] ^ state[Coefficient2Test];
             bool newOne = state[Coefficient1] ^ state[Coefficient2];
 
             state.LeftShift(1);

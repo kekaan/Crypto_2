@@ -44,6 +44,7 @@ namespace CryptoDesktop_2
             this.encryptionLabel = new System.Windows.Forms.Label();
             this.encryptButton = new System.Windows.Forms.Button();
             this.encryptionTestsRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.sequencePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sequenceLengthNumericUpDown)).BeginInit();
             this.panel1.SuspendLayout();
@@ -61,6 +62,7 @@ namespace CryptoDesktop_2
             // sequencePanel
             // 
             this.sequencePanel.BackColor = System.Drawing.Color.Gainsboro;
+            this.sequencePanel.Controls.Add(this.comboBox1);
             this.sequencePanel.Controls.Add(this.sequenceLabel);
             this.sequencePanel.Controls.Add(this.sequenceLengthNumericUpDown);
             this.sequencePanel.Controls.Add(this.settingsLabel);
@@ -68,7 +70,7 @@ namespace CryptoDesktop_2
             this.sequencePanel.Controls.Add(this.sequenceRichTextBox);
             this.sequencePanel.Location = new System.Drawing.Point(12, 12);
             this.sequencePanel.Name = "sequencePanel";
-            this.sequencePanel.Size = new System.Drawing.Size(378, 335);
+            this.sequencePanel.Size = new System.Drawing.Size(378, 361);
             this.sequencePanel.TabIndex = 1;
             // 
             // sequenceLabel
@@ -119,7 +121,7 @@ namespace CryptoDesktop_2
             this.panel1.Controls.Add(this.testsOutputRichTextBox);
             this.panel1.Location = new System.Drawing.Point(404, 14);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(378, 335);
+            this.panel1.Size = new System.Drawing.Size(378, 361);
             this.panel1.TabIndex = 2;
             // 
             // testsOutputLabel
@@ -158,7 +160,7 @@ namespace CryptoDesktop_2
             this.panel2.Controls.Add(this.encryptionTestsRichTextBox);
             this.panel2.Location = new System.Drawing.Point(797, 12);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(378, 335);
+            this.panel2.Size = new System.Drawing.Size(378, 361);
             this.panel2.TabIndex = 3;
             // 
             // decryptButton
@@ -198,12 +200,23 @@ namespace CryptoDesktop_2
             this.encryptionTestsRichTextBox.TabIndex = 0;
             this.encryptionTestsRichTextBox.Text = "";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Random",
+            "From file"});
+            this.comboBox1.Location = new System.Drawing.Point(3, 323);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(151, 28);
+            this.comboBox1.TabIndex = 5;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1187, 363);
+            this.ClientSize = new System.Drawing.Size(1187, 385);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.sequencePanel);
@@ -237,6 +250,7 @@ namespace CryptoDesktop_2
         private System.Windows.Forms.Label encryptionLabel;
         private System.Windows.Forms.Button encryptButton;
         private System.Windows.Forms.RichTextBox encryptionTestsRichTextBox;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

@@ -22,9 +22,27 @@ namespace CryptoDesktop_2
 
         private void getButton_Click(object sender, EventArgs e)
         {
-            MSequenceRegister register = new MSequenceRegister(103);
-            decimal sequenceLength = sequenceLengthNumericUpDown.Value;
+            // создание объекта регистра
+            sequenceRichTextBox.Clear();
+            MSequenceRegister register;
+            if (comboBox1.SelectedItem.ToString() != "Random")
+            {
+                using (OpenFileDialog fileDialog = new OpenFileDialog())
+                {
+                    if (fileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string startState = File.ReadAllText(fileDialog.FileName);
+                        register = new MSequenceRegister(103, startState);
+                    }
+                    else
+                        return;
+                }
+            }
+            else
+                register = new MSequenceRegister(103);
 
+            // формирование последовательности нужной длины
+            decimal sequenceLength = sequenceLengthNumericUpDown.Value;
             if (sequenceLength == Math.Truncate(sequenceLength))
                 sequenceRichTextBox.Text = register.GetMSequence((int)sequenceLength);
             else
@@ -46,19 +64,19 @@ namespace CryptoDesktop_2
 
             for (int i = 2; i < 5; i++)
             { 
-                (bool, double) serialTestResult = MSequenceTester.SerialTest(sequence, i);
-                testsOutputRichTextBox.Text += $"Serial test, serial length = {i}\n{serialTestResult.Item2} - Test passed: {serialTestResult.Item1}\n";
+                (double, double, double) serialTestResult = MSequenceTester.SerialTest(sequence, i);
+                testsOutputRichTextBox.Text += $"Serial test, serial length = {i}\n{serialTestResult.Item3} - AlphaMax: {serialTestResult.Item1}, AlphaMin: {serialTestResult.Item2}\n";
             }
             testsOutputRichTextBox.Text += "\n";
 
             (double, double) correlationTestResult1 = MSequenceTester.CorrelationTest(sequence, 1);
-            testsOutputRichTextBox.Text += $"Correlation Test, k = 1\nTest passed: {correlationTestResult1.Item1 < correlationTestResult1.Item2}. R = {correlationTestResult1.Item1}, Rref = {correlationTestResult1.Item2}\n";
+            testsOutputRichTextBox.Text += $"Correlation Test, k = 1\nR = {correlationTestResult1.Item1}, Rref = {correlationTestResult1.Item2}\n";
             (double, double) correlationTestResult2 = MSequenceTester.CorrelationTest(sequence, 2);
-            testsOutputRichTextBox.Text += $"Correlation Test, k = 2\nTest passed: {correlationTestResult2.Item1 < correlationTestResult2.Item2}. R = {correlationTestResult2.Item1}, Rref = {correlationTestResult2.Item2}\n";
+            testsOutputRichTextBox.Text += $"Correlation Test, k = 2\nR = {correlationTestResult2.Item1}, Rref = {correlationTestResult2.Item2}\n";
             (double, double) correlationTestResult8 = MSequenceTester.CorrelationTest(sequence, 8);
-            testsOutputRichTextBox.Text += $"Correlation Test, k = 8\nTest passed: {correlationTestResult8.Item1 < correlationTestResult8.Item2}. R = {correlationTestResult8.Item1}, Rref = {correlationTestResult8.Item2}\n";
+            testsOutputRichTextBox.Text += $"Correlation Test, k = 8\nR = {correlationTestResult8.Item1}, Rref = {correlationTestResult8.Item2}\n";
             (double, double) correlationTestResult9 = MSequenceTester.CorrelationTest(sequence, 9);
-            testsOutputRichTextBox.Text += $"Correlation Test, k = 9\nTest passed: {correlationTestResult9.Item1 < correlationTestResult9.Item2}. R = {correlationTestResult9.Item1}, Rref = {correlationTestResult9.Item2}\n";
+            testsOutputRichTextBox.Text += $"Correlation Test, k = 9\nR = {correlationTestResult9.Item1}, Rref = {correlationTestResult9.Item2}\n";
         
             
         }
@@ -101,7 +119,15 @@ namespace CryptoDesktop_2
 
         private void encryptButton_Click(object sender, EventArgs e)
         {
-            string fileName = "123.txt";
+            string fileName = "";
+            using (OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                    fileName = fileDialog.FileName;
+                else
+                    return;
+            }
+
             string sequence = File.ReadAllText("key.txt");
             Encrypter.Encrypt(fileName, sequence);
 
@@ -111,38 +137,38 @@ namespace CryptoDesktop_2
 
             for (int i = 2; i < 5; i++)
             {
-                (bool, double) serialTestResult = MSequenceTester.SerialTest(sourceFile, i);
-                encryptionTestsRichTextBox.Text += $"Serial test, serial length = {i}\n{serialTestResult.Item2} - Test passed: {serialTestResult.Item1}\n";
+                (double, double, double) serialTestResult = MSequenceTester.SerialTest(sourceFile, i);
+                encryptionTestsRichTextBox.Text += $"Serial test, serial length = {i}\n{serialTestResult.Item3} - AlphaMax: {serialTestResult.Item1}, AlphaMin: {serialTestResult.Item2}\n";
             }
             encryptionTestsRichTextBox.Text += "\n";
 
             (double, double) correlationTestResult1 = MSequenceTester.CorrelationTest(sourceFile, 1);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 1\nTest passed: {correlationTestResult1.Item1 < correlationTestResult1.Item2}. R = {correlationTestResult1.Item1}, Rref = {correlationTestResult1.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 1\nR = {correlationTestResult1.Item1}, Rref = {correlationTestResult1.Item2}\n";
             (double, double) correlationTestResult2 = MSequenceTester.CorrelationTest(sourceFile, 2);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 2\nTest passed: {correlationTestResult2.Item1 < correlationTestResult2.Item2}. R = {correlationTestResult2.Item1}, Rref = {correlationTestResult2.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 2\nR = {correlationTestResult2.Item1}, Rref = {correlationTestResult2.Item2}\n";
             (double, double) correlationTestResult8 = MSequenceTester.CorrelationTest(sourceFile, 8);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 8\nTest passed: {correlationTestResult8.Item1 < correlationTestResult8.Item2}. R = {correlationTestResult8.Item1}, Rref = {correlationTestResult8.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 8\nR = {correlationTestResult8.Item1}, Rref = {correlationTestResult8.Item2}\n";
             (double, double) correlationTestResult9 = MSequenceTester.CorrelationTest(sourceFile, 9);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 9\nTest passed: {correlationTestResult9.Item1 < correlationTestResult9.Item2}. R = {correlationTestResult9.Item1}, Rref = {correlationTestResult9.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 9\nR = {correlationTestResult9.Item1}, Rref = {correlationTestResult9.Item2}\n";
 
             encryptionTestsRichTextBox.Text += "____________________________\nencrypted.txt\n____________________________\n\n";
             sourceFile = FileInBinary("encrypted.txt");
 
             for (int i = 2; i < 5; i++)
             {
-                (bool, double) serialTestResult = MSequenceTester.SerialTest(sourceFile, i);
+                (double, double, double) serialTestResult = MSequenceTester.SerialTest(sourceFile, i);
                 encryptionTestsRichTextBox.Text += $"Serial test, serial length = {i}\n{serialTestResult.Item2} - Test passed: {serialTestResult.Item1}\n";
             }
             encryptionTestsRichTextBox.Text += "\n";
 
             (double, double) correlationTestResult11 = MSequenceTester.CorrelationTest(sourceFile, 1);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 1\nTest passed: {correlationTestResult11.Item1 < correlationTestResult11.Item2}. R = {correlationTestResult11.Item1}, Rref = {correlationTestResult11.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 1\nR = {correlationTestResult11.Item1}, Rref = {correlationTestResult11.Item2}\n";
             (double, double) correlationTestResult21 = MSequenceTester.CorrelationTest(sourceFile, 2);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 2\nTest passed: {correlationTestResult21.Item1 < correlationTestResult21.Item2}. R = {correlationTestResult21.Item1}, Rref = {correlationTestResult21.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 2\nR = {correlationTestResult21.Item1}, Rref = {correlationTestResult21.Item2}\n";
             (double, double) correlationTestResult81 = MSequenceTester.CorrelationTest(sourceFile, 8);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 8\nTest passed: {correlationTestResult81.Item1 < correlationTestResult81.Item2}. R = {correlationTestResult81.Item1}, Rref = {correlationTestResult81.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 8\nR = {correlationTestResult81.Item1}, Rref = {correlationTestResult81.Item2}\n";
             (double, double) correlationTestResult91 = MSequenceTester.CorrelationTest(sourceFile, 9);
-            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 9\nTest passed: {correlationTestResult91.Item1 < correlationTestResult91.Item2}. R = {correlationTestResult91.Item1}, Rref = {correlationTestResult91.Item2}\n";
+            encryptionTestsRichTextBox.Text += $"Correlation Test, k = 9\nR = {correlationTestResult91.Item1}, Rref = {correlationTestResult91.Item2}\n";
 
 
         }

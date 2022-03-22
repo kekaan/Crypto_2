@@ -9,7 +9,7 @@ namespace Crypto_2.Lib
 {
     public static class MSequenceTester
     {
-        public static (bool, double) SerialTest(string sequence, int serialLenght)
+        public static (double, double, double) SerialTest(string sequence, int serialLenght)
         {
             double alphaMin, alphaMax;
 
@@ -28,7 +28,7 @@ namespace Crypto_2.Lib
                     alphaMax = 8.547;
                     break;
                 default:
-                    return (false, -1);
+                    return (-1, -1, -1);
             }
             int count = 0;
             double referenceFrequency = sequence.Length / (serialLenght * Math.Pow(2, serialLenght));
@@ -58,7 +58,7 @@ namespace Crypto_2.Lib
             foreach (double frequency in serialFrequencies.Values)
                 criteria += Math.Pow(frequency - referenceFrequency, 2) / referenceFrequency;
 
-            return ((criteria < alphaMin && criteria > alphaMax), Math.Round(criteria, 5));
+            return (Math.Round(alphaMin, 5), Math.Round(alphaMax, 5), Math.Round(criteria, 5));
         }
 
         public static (double, double) CorrelationTest(string sequence, int k)
